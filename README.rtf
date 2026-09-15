@@ -1,0 +1,51 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 # \uc0\u9992 \u65039  Flight Delay & Root Cause Analytics Engine\
+\
+[![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)\
+[![Apache Spark](https://img.shields.io/badge/PySpark-3.5%2B-orange.svg)](https://spark.apache.org/)\
+[![DuckDB](https://img.shields.io/badge/DuckDB-Fast%20SQL-yellow.svg)](https://duckdb.org/)\
+[![Storage](https://img.shields.io/badge/Format-Apache%20Parquet-green.svg)](https://parquet.apache.org/)\
+[![BI](https://img.shields.io/badge/Visualization-Tableau-lightblue.svg)](https://www.tableau.com/)\
+\
+An end-to-end distributed data engineering and analytics pipeline built to process multi-year Bureau of Transportation Statistics (BTS) airline performance records. \
+\
+The system implements a columnar lakehouse architecture, performs multi-dimensional root cause delay attribution (decoupling controllable carrier operations from non-controllable weather/air traffic congestion), and deploys a PySpark machine learning pipeline to forecast high-risk route disruptions.\
+\
+---\
+\
+## \uc0\u55356 \u57303 \u65039  Architecture & Data Flow\
+\
+```text\
+[Raw BTS Airline & Airport Records]\
+                \uc0\u9474 \
+                \uc0\u9660 \
+  [01_ingest_partition.py (PySpark)]\
+  - Schema casting & sanitization\
+  - Out-of-core write to partitioned Parquet\
+                \uc0\u9474 \
+                \uc0\u9660 \
+   [Curated Lakehouse Storage]\
+   \uc0\u9492 \u9472 \u9472  data/curated/flights/Year=YYYY/*.parquet\
+                \uc0\u9474 \
+                \uc0\u9500 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9488 \
+                \uc0\u9660                                         \u9660 \
+ [02_root_cause_analysis.py (DuckDB)]    [03_feature_pipeline.py (PySpark ML)]\
+ - Multi-dimensional aggregations        - Window lag operational baselines\
+ - Controllable vs. cascade attribution  - StringIndexer & OneHotEncoder\
+ - Analytical mart generation             - GBT Classifier (High-Risk Routing)\
+                \uc0\u9474                                         \u9474 \
+                \uc0\u9660                                         \u9660 \
+ [data/mart/mart_root_cause_summary]     [data/mart/delay_risk_predictions]\
+                \uc0\u9474                                         \u9474 \
+                \uc0\u9492 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9516 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9472 \u9496 \
+                                    \uc0\u9660 \
+                      [Executive Tableau Dashboard]\
+                      - Operational Scorecards\
+                      - Root Cause Attribution Matrix\
+                      - Predictive Risk Monitoring}

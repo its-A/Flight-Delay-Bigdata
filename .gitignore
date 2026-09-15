@@ -1,0 +1,18 @@
+cat << 'EOF' > .gitignore
+# Virtual Environment
+.venv/
+env/
+__pycache__/
+
+# Raw and Curated Data
+data/raw/
+data/curated/
+*.parquet
+
+# Keep CSV marts if small, or exclude if large
+data/mart/*.parquet
+
+# OS junk
+.DS_Store
+.vscode/
+EOF
